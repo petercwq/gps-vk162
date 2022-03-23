@@ -1,14 +1,25 @@
 ﻿using System.IO.Ports;
 
-using var sp = new SerialPort("/dev/ttyACM0", 115200);
+//using var sp = new SerialPort("/dev/ttyACM0", 115200);
+//sp.Open();
+//while (true)
+//{
+//    try
+//    {
+//        string message = sp.ReadLine();
+//        Console.WriteLine(message);
+//    }
+//    catch (TimeoutException) { }
+//}
 
-sp.Open();
-while (true)
+var sp = new SerialPort("/dev/ttyACM0", 115200);
+var device = new NmeaParser.SerialPortDevice(sp);
+device.MessageReceived += (s, e) =>
 {
-    try
+    // called when a message is received
+    if (e.Message is NmeaParser.Messages.Rmc rmc)
     {
-        string message = sp.ReadLine();
-        Console.WriteLine(message);
+        Console.WriteLine($"Your current location is: {rmc.FixTime}, {rmc.Latitude}, {rmc.Longitude}");
     }
-    catch (TimeoutException) { }
-}
+};
+await device.OpenAsync();
