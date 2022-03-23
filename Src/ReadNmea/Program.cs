@@ -12,6 +12,7 @@
 //    catch (TimeoutException) { }
 //}
 
+// https://dotmorten.github.io/NmeaParser/api/index.html
 // /dev/ttyACM0
 // COM6
 var sp = new SerialPort("/dev/ttyACM0", 115200);
