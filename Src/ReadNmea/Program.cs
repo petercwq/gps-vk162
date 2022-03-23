@@ -1,8 +1,14 @@
 ﻿using System.IO.Ports;
 
 using var sp = new SerialPort("/dev/ttyACM0", 115200);
+
+sp.Open();
 while (true)
 {
-    var line = sp.ReadLine();
-    Console.WriteLine(line);
+    try
+    {
+        string message = sp.ReadLine();
+        Console.WriteLine(message);
+    }
+    catch (TimeoutException) { }
 }
